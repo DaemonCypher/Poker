@@ -167,6 +167,3 @@ if __name__ == '__main__':
             else:
                 find_winner()
                 sys.exit()
-
-
-        
