@@ -39,6 +39,8 @@ def displayCards(cards):
             rows[1] += '|{} | '.format(rank.ljust(2))
             rows[2] += '| {} | '.format(suit)
             rows[3] += '|_{}| '.format(rank.rjust(2, '_'))
+    for row in rows:
+        print(row)
 
     # Print each row on the screen:
     # The card ranks from lowest to highest
@@ -74,6 +76,52 @@ def is_four_of_a_kind(hand):
         if ranks.count(rank) == 4:
             return sorted(hand, key=lambda x: (ranks.count(x[0]), RANKS.index(x[0])), reverse=True)
     return False
+def is_flush(hand):
+    suits = [card[1] for card in hand]
+    if len(set(suits)) == 1:
+        return True
+    return False
+
+def is_straight(hand):
+    ranks = [RANKS.index(card[0]) for card in hand]
+    ranks.sort()
+    if len(set(ranks)) == 5 and (ranks[4] - ranks[0] == 4):
+        return True
+    return False
+
+def is_full_house(hand):
+    ranks = [card[0] for card in hand]
+    rank_counts = [ranks.count(rank) for rank in ranks]
+    if set(rank_counts) == {2, 3}:
+        return True
+    return False
+
+def is_three_of_a_kind(hand):
+    ranks = [card[0] for card in hand]
+    rank_counts = [ranks.count(rank) for rank in ranks]
+    if 3 in rank_counts:
+        return True
+    return False
+
+def is_two_pair(hand):
+    ranks = [card[0] for card in hand]
+    rank_counts = [ranks.count(rank) for rank in ranks]
+    if list(sorted(rank_counts)).count(2) == 4:
+        return True
+    return False
+
+def is_pair(hand):
+    ranks = [card[0] for card in hand]
+    rank_counts = [ranks.count(rank) for rank in ranks]
+    if 2 in rank_counts:
+        return True
+    return False
+
+def is_high_card(hand):
+    ranks = [RANKS.index(card[0]) for card in hand]
+    if len(set(ranks)) == 5:
+        return True
+    return False
 
 # Similar functions for is_full_house, is_flush, is_straight,
 # is_three_of_a_kind, is_two_pair, is_pair, is_high_card...
@@ -82,12 +130,13 @@ def compare_hands(player_hand, dealer_hand):
     player_value = hand_value(player_hand)
     dealer_value = hand_value(dealer_hand)
 
-    if player_value > dealer_value:
-        return 'player'
-    elif dealer_value > player_value:
-        return 'dealer'
+    if player_value and dealer_value:
+        if player_value > dealer_value:
+            return 'player'
+        elif dealer_value > player_value:
+            return 'dealer'
+        else:
+            return 'tie'
     else:
-        return 'tie'
+        return 'error'  # Return 'error' if hand_value returned None
 
-for row in rows:
-    print(row)
