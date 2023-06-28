@@ -1,6 +1,7 @@
 import sys
 from cards import *
 from player import *
+import itertools
 SMALLBLIND = 50
 BIGBLIND = 100
 total = {}
@@ -8,6 +9,26 @@ potPool = 0
 turn = False
 river = False 
 prevChoice = [] #use to figure out if someone bet or raised
+def find_winner():
+    """Find and announce the winner."""
+    for position, player in total.items():
+        if player.folded:
+            continue  # skip folded players
+        best_hand_value = None
+        best_hand = None
+        # Get all combinations of 5 cards out of the player's hand and the board
+        for combination in itertools.combinations(player.hand + board, 5):
+            value = hand_value(list(combination))
+            if best_hand_value is None or value > best_hand_value:
+                best_hand_value = value
+                best_hand = combination
+        player.best_hand_value = best_hand_value
+        player.best_hand = best_hand
+
+    # Find the player(s) with the best hand
+    winners = [player for position, player in total.items() if player.best_hand_value == max(player.best_hand_value for player in total.values())]
+    for winner in winners:
+        print("{} wins with hand: {}".format(winner.name, winner.best_hand))
 def commands(player):
     global potPool
     choice = input('''
@@ -144,6 +165,8 @@ if __name__ == '__main__':
             elif round < 4:
                 round += 1
             else:
-                print("THE END")
+                find_winner()
                 sys.exit()
+
+
         
