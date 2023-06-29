@@ -39,10 +39,11 @@ def displayCards(cards):
             rows[1] += '|{} | '.format(rank.ljust(2))
             rows[2] += '| {} | '.format(suit)
             rows[3] += '|_{}| '.format(rank.rjust(2, '_'))
+    # Print each row on the screen
     for row in rows:
         print(row)
         
-    # Print each row on the screen:
+    
     # The card ranks from lowest to highest
 RANKS = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 
@@ -61,7 +62,11 @@ def hand_value(hand):
     return None
 
 def is_royal_flush(hand):
+    # check if the last card in the hand is an ace for a royal flush
     if is_flush(hand) and is_straight(hand) and sorted(hand)[4][0] == 'A':
+        # The lambda function extracts the rank of each card 
+        # and maps it to its position in the RANKS list, 
+        # which represents the order of ranks from lowest to highest.
         return sorted(hand, key=lambda x: RANKS.index(x[0]))
     return False
 
@@ -71,14 +76,19 @@ def is_straight_flush(hand):
     return False
 
 def is_four_of_a_kind(hand):
+    # create a list of ranks from hand
     ranks = [card[0] for card in hand]
     for rank in ranks:
+        # check if there are 4 of the same rank in the hand
         if ranks.count(rank) == 4:
             return sorted(hand, key=lambda x: (ranks.count(x[0]), RANKS.index(x[0])), reverse=True)
     return False
 
 def is_flush(hand):
+    # creates a list of suits from hand
     suits = [card[1] for card in hand]
+    # check if its a flush as there should be only one 
+    # one suit in the set
     if len(set(suits)) == 1:
         return True
     return False
@@ -86,12 +96,18 @@ def is_flush(hand):
 def is_straight(hand):
     ranks = [RANKS.index(card[0]) for card in hand]
     ranks.sort()
+    # check to see if there are five different cards in the set
+    # and also if the smallest value - largest value in the hand = 4
+    # otherwise it is not a straight
     if len(set(ranks)) == 5 and (ranks[4] - ranks[0] == 4):
         return True
     return False
 
 def is_full_house(hand):
+    # grab rank value from hand
     ranks = [card[0] for card in hand]
+    # count the number of cards that are same
+    # should be expecting 2,3 combination in the list
     rank_counts = [ranks.count(rank) for rank in ranks]
     if set(rank_counts) == {2, 3}:
         return True
