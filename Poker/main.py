@@ -9,6 +9,8 @@ potPool = 0
 turn = False
 river = False 
 prevChoice = [] #use to figure out if someone bet or raised
+
+
 def find_winner():
     """Find and announce the winner."""
     for position, player in total.items():
@@ -29,6 +31,7 @@ def find_winner():
     winners = [player for position, player in total.items() if player.best_hand_value == max(player.best_hand_value for player in total.values())]
     for winner in winners:
         print("{} wins with hand: {}".format(winner.name, winner.best_hand))
+        
 def commands(player):
     global potPool
     choice = input('''
