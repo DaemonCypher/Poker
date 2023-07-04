@@ -141,6 +141,7 @@ def is_high_card(hand):
     return False
 
 def compare_hands(player_hand, dealer_hand):
+    # deal hand = player 2
     player_value = hand_value(player_hand)
     dealer_value = hand_value(dealer_hand)
 

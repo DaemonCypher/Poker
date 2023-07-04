@@ -4,6 +4,7 @@ class Player():
         self.balance = balance
         self.hand = hand
         self.folded = folded
+        self.bet = 0
 
     def getBalance(self):
         return self.balance
